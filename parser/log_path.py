@@ -22,12 +22,17 @@ class MTGALogPath:
         """Get default MTGA log paths based on operating system."""
         if self.system == "Windows":
             return [
-                # Standard Windows path
+                # Standard Windows path - Player.log (active game log)
+                Path(os.environ.get("APPDATA", "")) / "LocalLow" / "Wizards Of The Coast" / "MTGA" / "Player.log",
+                # Previous game log
+                Path(os.environ.get("APPDATA", "")) / "LocalLow" / "Wizards Of The Coast" / "MTGA" / "Player-prev.log",
+                # Alternative path - Player.log
+                Path(os.environ.get("LOCALAPPDATA", "")) / "Wizards Of The Coast" / "MTGA" / "Player.log",
+                # Legacy output_log.txt paths
                 Path(os.environ.get("APPDATA", "")) / "LocalLow" / "Wizards Of The Coast" / "MTGA" / "output_log.txt",
-                # Alternative path
                 Path(os.environ.get("LOCALAPPDATA", "")) / "Wizards Of The Coast" / "MTGA" / "output_log.txt",
                 # Steam installation path
-                Path(os.environ.get("PROGRAMFILES", "")) / "Steam" / "steamapps" / "common" / "MTGA" / "output_log.txt"
+                Path(os.environ.get("PROGRAMFILES", "")) / "Steam" / "steamapps" / "common" / "MTGA" / "Player.log"
             ]
         elif self.system == "Darwin":  # macOS
             return [

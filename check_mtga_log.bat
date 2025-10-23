@@ -4,28 +4,54 @@ echo    MTGA Log File Checker
 echo ========================================
 echo.
 
-REM Check for MTGA log file
-set "LOG_PATH=%APPDATA%\..\LocalLow\WOTC\MTGA\output_log.txt"
+echo Searching for MTGA log files...
+echo.
 
-if exist "%LOG_PATH%" (
-    echo ✅ Found MTGA log file!
-    echo Location: %LOG_PATH%
-    echo.
-    echo You can now run the AI Coach:
-    echo   - run_ai_coach.bat
-    echo.
-) else (
-    echo ❌ MTGA log file not found
-    echo.
-    echo To fix this:
-    echo 1. Start MTGA Arena
-    echo 2. Begin a match (any format)
-    echo 3. Let it run for a few minutes
-    echo 4. Then run this checker again
-    echo.
-    echo Expected location: %LOG_PATH%
-    echo.
+REM Check AppData\LocalLow\Wizards Of The Coast\MTGA for Player.log
+if exist "%APPDATA%\..\LocalLow\Wizards Of The Coast\MTGA\Player.log" (
+    echo ✅ Found: AppData\LocalLow\Wizards Of The Coast\MTGA\Player.log
+    goto :found
 )
 
+REM Check LocalAppData\Wizards Of The Coast\MTGA for Player.log
+if exist "%LOCALAPPDATA%\Wizards Of The Coast\MTGA\Player.log" (
+    echo ✅ Found: LocalAppData\Wizards Of The Coast\MTGA\Player.log
+    goto :found
+)
+
+REM Check AppData\LocalLow\WOTC\MTGA for output_log.txt (legacy)
+if exist "%APPDATA%\..\LocalLow\WOTC\MTGA\output_log.txt" (
+    echo ✅ Found: AppData\LocalLow\WOTC\MTGA\output_log.txt
+    goto :found
+)
+
+REM Check LocalAppData\WOTC\MTGA for output_log.txt (legacy)
+if exist "%LOCALAPPDATA%\WOTC\MTGA\output_log.txt" (
+    echo ✅ Found: LocalAppData\WOTC\MTGA\output_log.txt
+    goto :found
+)
+
+REM Check Documents
+if exist "%USERPROFILE%\Documents\MTGA\Player.log" (
+    echo ✅ Found: Documents\MTGA\Player.log
+    goto :found
+)
+
+echo ❌ No MTGA log files found in common locations
+echo.
+echo The game event log is only created when you're actively playing a match.
+echo Make sure you:
+echo 1. Start a match in MTGA Arena
+echo 2. Let it run for a few minutes
+echo 3. Then run this finder again
+echo.
+goto :end
+
+:found
+echo.
+echo ✅ MTGA log files found! You can now run the AI Coach.
+echo.
+
+:end
 echo Press any key to continue...
 pause >nul
