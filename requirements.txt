@@ -1,0 +1,11 @@
+# Core dependencies for MTGA log parser
+watchdog>=3.0.0
+pydantic>=2.0.0
+orjson>=3.9.0
+websockets>=11.0.0
+requests>=2.31.0
+python-dotenv>=1.0.0
+
+# Development and testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
