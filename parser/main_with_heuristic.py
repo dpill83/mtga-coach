@@ -20,7 +20,7 @@ from data.scryfall_downloader import ScryfallDownloader
 from parser.log_path import MTGALogPath
 from parser.log_parser import MTGALogParser
 from parser.file_tailer import BufferedLogTailer
-from state.state_integration import StateIntegration
+from state.state_integration import StateIntegrationManager
 from engine.heuristic_engine import HeuristicEngine
 
 # Configure logging
@@ -100,7 +100,7 @@ class MTGACoachWithHeuristic:
             
             # 4. Initialize state integration
             logger.info("Initializing state integration...")
-            self.state_integration = StateIntegration(websocket_port=self.websocket_port)
+            self.state_integration = StateIntegrationManager(websocket_port=self.websocket_port)
             
             # 5. Initialize heuristic engine
             logger.info("Initializing heuristic engine...")
