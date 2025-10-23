@@ -1,0 +1,1 @@
+# MTGA Coach State Package
