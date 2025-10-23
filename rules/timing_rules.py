@@ -13,7 +13,7 @@ import logging
 
 from state.game_state import GameState, GameStatus
 from state.player_state import PlayerState
-from parser.events import Phase, ZoneType, CardType
+from parser.events import Phase, ZoneType, CardType, CardInfo
 from rules.action_types import Action, ActionType, ActionTiming, ActionPriority
 
 logger = logging.getLogger(__name__)
