@@ -1,0 +1,1 @@
+# MTGA Coach Rules Package
