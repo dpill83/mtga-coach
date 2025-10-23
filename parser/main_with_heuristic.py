@@ -113,14 +113,46 @@ class MTGACoachWithHeuristic:
             logger.error(f"Failed to initialize: {e}")
             return False
     
+    async def _start_with_port_fallback(self) -> bool:
+        """Start state integration with automatic port fallback."""
+        original_port = self.websocket_port
+        
+        # Try original port first
+        try:
+            if await self.state_integration.start():
+                return True
+        except Exception as e:
+            logger.warning(f"Port {original_port} failed: {e}")
+        
+        # Try alternative ports
+        for port_offset in range(1, 10):
+            try:
+                new_port = original_port + port_offset
+                logger.info(f"Trying port {new_port}...")
+                
+                # Create new state integration with new port
+                self.state_integration = StateIntegrationManager(websocket_port=new_port)
+                self.websocket_port = new_port
+                
+                if await self.state_integration.start():
+                    logger.info(f"Successfully started on port {new_port}")
+                    return True
+                    
+            except Exception as e:
+                logger.warning(f"Port {new_port} failed: {e}")
+                continue
+        
+        logger.error("Could not find an available port")
+        return False
+    
     async def start(self) -> bool:
         """Start the MTGA Coach with heuristic AI."""
         try:
             if not await self.initialize():
                 return False
             
-            # Start state integration
-            if not await self.state_integration.start():
+            # Start state integration with port conflict handling
+            if not await self._start_with_port_fallback():
                 logger.error("Failed to start state integration")
                 return False
             

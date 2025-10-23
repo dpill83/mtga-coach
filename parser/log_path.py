@@ -113,9 +113,14 @@ class MTGALogPath:
             with open(path, 'r', encoding='utf-8', errors='ignore') as f:
                 # Read first few lines to check format
                 for i, line in enumerate(f):
-                    if i >= 10:  # Check first 10 lines
+                    if i >= 20:  # Check first 20 lines
                         break
-                    if "[UnityCrossThreadLogger]" in line and "greToClientEvent" in line:
+                    # Check for various MTGA log formats
+                    if ("[UnityCrossThreadLogger]" in line and "greToClientEvent" in line) or \
+                       ("Mono path" in line) or \
+                       ("Initialize engine version" in line) or \
+                       ("[PhysX]" in line) or \
+                       ("Input System" in line):
                         return True
             
             return False
